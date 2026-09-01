@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roleplays en Español</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0F1826;
+  --bg2:#0B121C;
+  --panel:#16233A;
+  --panel-alt:#1B2C46;
+  --line:#2B3C58;
+  --line-soft:#22314A;
+  --cream:#F3ECDC;
+  --dim:#8FA0BC;
+  --dim2:#5F7292;
+  --amber:#E8A33D;
+  --amber-bright:#FFC670;
+  --green:#55B092;
+  --blue:#5B8DEF;
+  --coral:#D9695F;
+  --purple:#A483D9;
+  --strongred:#E14F4F;
+  --teal:#4FC3C7;
+  --teal-bright:#82E7EA;
+  --gold:#D9B44A;
+  --slate:#8C9BB5;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:radial-gradient(1200px 800px at 15% -10%, #17233A 0%, var(--bg) 55%, var(--bg2) 100%);
+  color:var(--cream);
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  padding-bottom:80px;
+}
+::selection{background:var(--amber);color:#1a1a1a;}
+
+/* ---------- HEADER / SWITCHBOARD PANEL ---------- */
+.masthead{
+  padding:38px 24px 26px;
+  border-bottom:1px solid var(--line);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(255,255,255,0.015) 38px 39px),
+    linear-gradient(180deg, #121D30 0%, #0F1826 100%);
+  position:relative;
+  overflow:hidden;
+}
+.masthead::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image: radial-gradient(circle, rgba(232,163,61,0.06) 1px, transparent 1.4px);
+  background-size: 14px 14px;
+  opacity:0.5;
+}
+.masthead-inner{max-width:1180px;margin:0 auto;position:relative;z-index:2;}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--amber);
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:10px;
+}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);animation:pulse 2.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+h1.title{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:clamp(28px,4vw,42px);
+  margin:0 0 8px;
+  letter-spacing:-0.01em;
+}
+.subtitle{color:var(--dim);font-size:15px;max-width:640px;line-height:1.55;margin-bottom:26px;}
+
+.control-row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;}
+
+.gender-switch{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px;
+  display:inline-flex;
+  gap:4px;
+}
+.gender-switch button{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  letter-spacing:0.03em;
+  border:none;
+  background:transparent;
+  color:var(--dim);
+  padding:9px 18px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:all .18s ease;
+}
+.gender-switch button.active{background:var(--amber);color:#1a1408;font-weight:600;}
+.gender-switch button:not(.active):hover{color:var(--cream);}
+.control-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--dim2);
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  margin-bottom:7px;
+  display:block;
+}
+.reset-btn{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--dim);
+  padding:11px 16px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:all .15s;
+}
+.reset-btn:hover{border-color:var(--amber);color:var(--amber);}
+
+/* ---------- FILTER STRIP ---------- */
+.filter-strip{
+  max-width:1180px;margin:0 auto;
+  padding:20px 24px 0;
+  display:flex;flex-wrap:wrap;gap:9px;
+}
+.chip{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--dim);
+  padding:8px 14px 8px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:all .15s;
+  user-select:none;
+}
+.chip .led{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.chip:hover{border-color:var(--dim2);color:var(--cream);}
+.chip.active{background:var(--panel-alt);color:var(--cream);border-color:var(--cream);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.05);}
+.chip .cnt{color:var(--dim2);font-size:10.5px;}
+.chip.active .led{box-shadow:0 0 6px currentColor;}
+
+/* ---------- MAIN ---------- */
+main{max-width:1180px;margin:0 auto;padding:34px 24px 0;}
+
+.practica{margin-bottom:26px;}
+.practica.hidden-empty{display:none;}
+
+.practica-tab{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+  cursor:pointer;
+  user-select:none;
+}
+.fold-btn{
+  flex-shrink:0;
+  width:38px;height:38px;
+  border-radius:9px;
+  background:var(--panel);
+  border:1.5px solid var(--line);
+  color:var(--dim);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  transition:transform .18s ease, border-color .15s, color .15s, background .15s;
+}
+.practica-tab:hover .fold-btn{border-color:var(--amber);color:var(--amber);background:var(--panel-alt);}
+.practica.collapsed .fold-btn{transform:rotate(-90deg);}
+.practica-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:0.06em;
+  color:#1a1408;
+  background:var(--amber);
+  padding:4px 11px;
+  border-radius:5px;
+  flex-shrink:0;
+}
+.practica-name{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;
+  font-size:22px;
+}
+.practica-count{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  color:var(--dim2);
+}
+.practica-content{overflow:hidden;}
+.practica.collapsed .practica-content{display:none;}
+
+/* explicacion accordion */
+details.brief{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  margin-bottom:20px;
+  overflow:hidden;
+}
+details.brief summary{
+  list-style:none;
+  cursor:pointer;
+  padding:15px 18px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  letter-spacing:0.04em;
+  color:var(--amber);
+  text-transform:uppercase;
+}
+details.brief summary::-webkit-details-marker{display:none;}
+details.brief summary::before{
+  content:"▸";
+  display:inline-block;
+  transition:transform .18s ease;
+  color:var(--amber);
+  font-size:11px;
+}
+details.brief[open] summary::before{transform:rotate(90deg);}
+.brief-body{
+  padding:6px 22px 20px 22px;
+  border-top:1px solid var(--line-soft);
+  font-size:14px;
+  line-height:1.65;
+  color:var(--cream);
+}
+.brief-body h4{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:13.5px;
+  color:var(--teal);
+  margin:16px 0 6px;
+  font-weight:600;
+}
+.brief-body h4:first-child{margin-top:14px;}
+.brief-body ul{margin:0 0 4px;padding-left:20px;}
+.brief-body li{margin-bottom:4px;color:var(--dim);}
+.brief-body .quote{
+  font-style:italic;
+  color:var(--cream);
+  border-left:2px solid var(--amber);
+  padding-left:10px;
+  margin:8px 0;
+  display:block;
+}
+.brief-body ol{margin:4px 0 4px;padding-left:22px;color:var(--dim);}
+.brief-body ol li{margin-bottom:2px;}
+.brief-group{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--amber);
+  border-top:1px dashed var(--line-soft);
+  margin-top:22px;
+  padding-top:14px;
+}
+.brief-group:first-child{border-top:none;margin-top:0;padding-top:0;}
+
+/* ---------- CARDS ---------- */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:14px;
+}
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:0;
+  position:relative;
+  transition:border-color .15s, transform .15s;
+  display:flex;
+  flex-direction:column;
+}
+.card:hover{border-color:var(--line-soft);transform:translateY(-1px);}
+.card-perf{
+  height:10px;
+  background-image: radial-gradient(circle, var(--bg) 2.6px, transparent 2.8px);
+  background-size:14px 100%;
+  background-position:6px center;
+  border-bottom:1px dashed var(--line);
+}
+.card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  padding:14px 16px 0;
+}
+.cuenta-block{min-width:0;}
+.cuenta-name{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:16px;
+  font-weight:700;
+  color:var(--cream);
+  line-height:1.3;
+}
+.cuenta-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  font-weight:500;
+  color:var(--amber-bright);
+}
+.copy-btn{
+  border:none;
+  background:transparent;
+  color:var(--dim2);
+  cursor:pointer;
+  font-size:12px;
+  padding:2px 4px;
+  border-radius:5px;
+  vertical-align:middle;
+  margin-left:2px;
+  transition:all .15s;
+}
+.copy-btn:hover{color:var(--amber);background:var(--panel-alt);}
+.copy-btn.copied{color:var(--green);}
+.cuenta-cat{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--dim);
+  letter-spacing:0.02em;
+  margin-top:3px;
+}
+.shuffle-btn{
+  flex-shrink:0;
+  background:var(--panel-alt);
+  border:1px solid var(--line);
+  color:var(--dim);
+  width:30px;height:30px;
+  border-radius:7px;
+  cursor:pointer;
+  font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.shuffle-btn:hover{border-color:var(--amber);color:var(--amber);transform:rotate(35deg);}
+.shuffle-btn.locked{opacity:.35;cursor:default;}
+.shuffle-btn.locked:hover{border-color:var(--line);color:var(--dim);transform:none;}
+
+.tag-row{padding:10px 16px 0;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  padding:4px 9px;
+  border-radius:5px;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  letter-spacing:0.02em;
+}
+.tag .led{width:6px;height:6px;border-radius:50%;}
+.tag.fixed{background:var(--panel-alt);color:var(--dim);border:1px solid var(--line);}
+
+.card-body{
+  padding:12px 16px 14px;
+  font-size:13.5px;
+  line-height:1.55;
+  color:var(--cream);
+  white-space:pre-line;
+  flex-grow:1;
+}
+.card-foot{
+  margin-top:auto;
+  border-top:1px solid var(--line-soft);
+  background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+  padding:12px 16px 13px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.card-foot .field{display:flex;flex-direction:column;gap:2px;}
+.card-foot .field-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color:var(--dim2);
+  display:flex;align-items:center;gap:4px;
+}
+.card-foot .field-value{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:15.5px;
+  font-weight:700;
+  letter-spacing:0.01em;
+}
+.card-foot .field-value.name{color:var(--amber-bright);}
+.card-foot .field-value.tel{color:var(--teal-bright);}
+.card-foot .field-value.disp{color:var(--gold);font-size:14px;}
+
+.empty-state{
+  padding:40px 20px;
+  text-align:center;
+  color:var(--dim2);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;
+  border:1px dashed var(--line);
+  border-radius:var(--radius);
+}
+
+footer.app-footer{
+  max-width:1180px;margin:40px auto 0;padding:20px 24px;
+  border-top:1px solid var(--line);
+  color:var(--dim2);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+}
+
+@media(max-width:640px){
+  .control-row{flex-direction:column;align-items:stretch;}
+  .grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="eyebrow"><span class="dot"></span>Centralita · Panel de formación</div>
+    <h1 class="title">Manual del formador — CAI</h1>
+    <p class="subtitle">Todas las prácticas del curso de atención de llamadas, organizadas por tema. Cada tarjeta trae el guion a decir en primera persona, el teléfono que debe facilitarse cuando el agente lo pida, y un dado para generar una variante nueva.</p>
+    <div class="control-row">
+      <div>
+        <span class="control-label">Rol de la persona formadora</span>
+        <div class="gender-switch" id="genderSwitch">
+          <button data-g="f">Mujer</button>
+          <button data-g="m" class="active">Hombre</button>
+        </div>
+      </div>
+      <div>
+        <span class="control-label">&nbsp;</span>
+        <button class="reset-btn" id="resetBtn">↻ Nuevas variantes (todas)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="filter-strip" id="filterStrip"></div>
+
+<main id="main"></main>
+
+<footer class="app-footer">
+  <span id="statCount">39 roleplays · 9 tipos de llamada · 5 bloques de práctica</span>
+  <span>El teléfono, el nombre, la empresa y otros datos marcados se generan de forma aleatoria en cada variante — el resto es fijo.</span>
+</footer>
+
+<script>
+/* ================= DATA POOLS ================= */
+const NOMBRES_F = ['Amanda','Laura','Cristina','Marta','Sonia','Elena','Noelia','Beatriz','Patricia','Rocío','Silvia','Irene'];
+const NOMBRES_M = ['Carlos','Javier','Sergio','Alberto','Diego','Rubén','Mario','Adrián','Pablo','Iván','Álvaro','Hugo'];
+const APELLIDOS = ['Santiago','Fernández','Vidal','Escudero','Reyes','Campos','Aguilar','Soler','Duarte','Blanco','Castaño','Pardo','García','Molina','Peña','Nieto','Salas','Iglesias','Cabrera','Ferrer','Lozano','Cortés','Bermejo','Ruiz','Costa','Domínguez','Herrera','Vega','Cano','Prieto','Martínez','Rodríguez','González','Sánchez','Pérez','Gómez','Jiménez','Hernández','Núñez','Sáez','Ibáñez','Gutiérrez','Vázquez','Beltrán','Márquez','Velázquez'];
+const EMPRESAS = ['Torres y Asociados','Altamira Marketing','Grupo Delfos','Ibermática Soluciones','Nortesol S.L.','Vertex Consulting','Talía Comunicación','Bravo & Ríos','Estudio Marín','Cobalto Digital'];
+const HOTELES = ['Hotel Alameda','Hotel Vistamar','Hotel Puerta Real','Hotel Cardenal','Hotel Los Álamos','Hotel Miramar Plaza'];
+const CIUDADES = ['Valencia','Bilbao','Sevilla','Zaragoza','Málaga','Alicante','Murcia','Vigo'];
+const PAISES = ['Italia','Portugal','Grecia','Marruecos','Croacia','Egipto'];
+const FECHAS = ['del 4 al 12 de septiembre','del 20 al 28 de octubre','del 2 al 9 de agosto','del 15 al 22 de noviembre','del 6 al 14 de junio'];
+const MOTIVOS_CONTABLES = [
+  'Necesito que me quitéis el IVA de una factura.',
+  'Quiero pedir un duplicado de una factura para mi gestoría.',
+  'Necesito que corrijáis los datos fiscales de una factura.',
+  'Quiero preguntar por un pago que no aparece reflejado en mi última factura.',
+  'Necesito el desglose del IVA de mi última factura.',
+  'Quiero pedir que me cambien la forma de pago de una factura pendiente.'
+];
+const DISPONIBILIDADES = [
+  'antes de las 18:00',
+  'entre las 16:00 y las 19:00',
+  'a partir de las 15:00',
+  'a las 10:00 de la mañana',
+  'a cualquier hora',
+  'a partir de las 12:00',
+  'por la tarde, después de las 17:00',
+  'antes de comer, sobre las 13:00',
+  'a partir de las 9:00'
+];
+const DIRECCIONES = [
+  'Calle Mayor 12, 3ºB',
+  'Avenida de la Constitución 45',
+  'Calle Real 8, 2ºA',
+  'Paseo de Gracia 101',
+  'Calle Alcalá 233',
+  'Avenida del Puerto 5, bajo',
+  'Calle San Vicente 67, 4ºC',
+  'Plaza del Ayuntamiento 3'
+];
+
+function rnd(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function rndPhone(){
+  let n = '6';
+  for(let i=0;i<8;i++) n += Math.floor(Math.random()*10);
+  return n.slice(0,3)+' '+n.slice(3,6)+' '+n.slice(6,9);
+}
+function dosApellidos(){
+  const a1 = rnd(APELLIDOS);
+  let a2 = rnd(APELLIDOS);
+  while(a2 === a1) a2 = rnd(APELLIDOS);
+  return a1 + ' ' + a2;
+}
+function slug(name){return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z]/g,'');}
+
+/* ================= CATEGORIES ================= */
+const CATS = {
+  devolucion:   {label:'Devolución de llamada', color:'var(--amber)'},
+  transferencia:{label:'Transferencia',          color:'var(--green)'},
+  informacion:  {label:'Dar información',        color:'var(--blue)'},
+  dificil:      {label:'Caller difícil / molesto', color:'var(--coral)'},
+  comercial:    {label:'Llamada comercial',       color:'var(--purple)'},
+  emergencia:   {label:'Emergencia',              color:'var(--strongred)'},
+  cliente:      {label:'Llamada de nuestro cliente', color:'var(--teal)'},
+  cita:         {label:'Cita en calendario',      color:'var(--gold)'},
+  otros:        {label:'Otros (subcuenta, agente nativo, broma)', color:'var(--slate)'}
+};
+
+/* ================= PRACTICAS (5 bloques, en el orden original) ================= */
+const PRACTICAS = {
+ sec1:{num:'Práctica 1', name:'Introducción a CAI y "No transferir"',
+   brief:`
+   <h4>El CAI en general</h4>
+   <ul><li>Saludo</li><li>Motivos de llamada</li><li>Estatus finales</li><li>Campos mandatorios</li></ul>
+   <h4>Orden de los 6 elementos de la nota</h4>
+   <ol><li>Instrucción</li><li>Tiempo</li><li>Motivo + detalles</li><li>Estado de ánimo</li><li>Datos faltantes</li><li>Transferencia</li></ol>
+   <h4>Orden de la conversación</h4>
+   <ol><li>Saludo</li><li>Nombre de oídas</li><li>Seleccionar motivo</li><li>Excusa y solución</li><li>Recopilar datos</li><li>Parafrasear, repetir</li><li>Estatus final</li></ol>
+   <h4>Excusa y devolución de llamada</h4>
+   <span class="quote">"La persona que se encarga de esto se encuentra ocupada, pero le llamará en cuanto esté disponible."</span>
+   `},
+ sec2:{num:'Práctica 2', name:'Transferir llamadas',
+   brief:`
+   <h4>La instrucción "Transferir" — cómo se hace</h4>
+   <ol>
+   <li>Saludo</li>
+   <li>Seleccionar el escenario de llamada</li>
+   <li>Solicitar los campos mandatorios</li>
+   <li>Nota previa a la transferencia</li>
+   <li>Llamar a nuestro cliente, decir el saludo y transferir si te da permiso.</li>
+   </ol>
+   <h4>Otros puntos importantes</h4>
+   <ul>
+   <li>Transferencia en horas determinadas</li>
+   <li>Pedir todos los campos mandatorios siempre antes de transferir</li>
+   <li>Llamada en bucle</li>
+   </ul>
+   <h4>Pestaña empleados</h4>
+   <ul>
+   <li>Enseñar la pestaña empleados y explicar que también se puede transferir desde ahí.</li>
+   </ul>`},
+ sec3:{num:'Práctica 3', name:'Dar información y Pedidos',
+   brief:`
+   <ul>
+   <li>Instrucción "dar información"</li>
+   <li>Solicitar todos los campos mandatorios antes de informar.</li>
+   <li>Estatus final "Se ha dado información", cuando no es necesaria una devolución de llamada ni email</li>
+   <li>Campo "Información actual"</li>
+   <li>Anotar pedidos</li>
+   <li>Informar al cliente por teléfono → siempre cerrar como "Se ha tomado nota"</li>
+   </ul>`},
+ sec4:{num:'Práctica 4', name:'Llamadas desafiantes y llamadas de nuestro cliente',
+   brief:`
+   <div class="brief-group">Callers desafiantes</div>
+   <h4>No quieren repetir sus datos</h4>
+   <span class="quote">"Démelos de nuevo para asegurarme de gestionarlo más rápido."</span>
+   <h4>Callers molestos</h4>
+   <span class="quote">"Le comprendo, vuelva a decirme sus datos para ir yo personalmente a decirle que se ponga en contacto en cuanto vuelva."</span>
+   <h4>Callers que insultan</h4>
+   <ul><li>Indicar que no podemos continuar la llamada si sigue hablando así</li></ul>
+   <h4>Comerciales</h4>
+   <ul><li>Con motivo: seguimos las instrucciones</li><li>Sin motivo: tratamos la llamada como normal, seleccionando el motivo más adecuado, normalmente "Otros"</li></ul>
+   <h4>Emergencias</h4>
+   <ul><li>Familiares urgentes</li><li>Está en la puerta</li><li>Tiene una cita ahora, presencial o telefónica</li><li>Arrestos</li></ul>
+   <div class="brief-group">Llamadas de nuestro cliente</div>
+   <h4>Cómo identificarlo</h4>
+   <ul><li>Contraseña telefónica</li><li>Llamando al número de emergencia</li><li>Calendario de gestión de llamadas</li><li>Información actual</li></ul>
+   <h4>Servicios de secretaría</h4>
+   <h4>Llamadas que no contestan</h4>
+   <ul><li>Decir el saludo tres veces antes de colgar</li></ul>`},
+ sec5:{num:'Práctica 5', name:'Documentos, Subcuentas y Citas',
+   brief:`
+   <ul>
+   <li>Pestaña de información de la empresa</li>
+   <li>Información pública y privada</li>
+   <li>Transferir a un agente nativo</li>
+   <li>Subcuentas</li>
+   <li>Citas en calendario</li>
+   <li>Documentos informativos</li>
+   </ul>`}
+};
+
+/* ================= ROLEPLAYS ================= */
+/* Todo el texto está escrito como guion en primera persona: lo que la persona
+   formadora debe decir al interpretar a quien llama. Las instrucciones dirigidas
+   a quien forma (no son falas del personaje) van entre paréntesis. */
+const ROLEPLAYS = [
+ {id:'p12_1',practica:'sec1',cuenta:'Universal Redes',cuentaId:'129038',cuentaCategoria:'Consultoría de redes y soporte informático',categoria:'devolucion',tipoLabel:'Solicitud de devolución de llamada + se ha tomado nota',
+  texto:'Hola, quiero solicitar un presupuesto para instalar una red informática para dos puestos de trabajo en la oficina.\nEmpresa: {EMPRESA}.'},
+ {id:'p12_2',practica:'sec1',cuenta:'Seguros Méndez y Pámies',cuentaId:'129047',cuentaCategoria:'Seguros',categoria:'devolucion',tipoLabel:'Solicitud de devolución de llamada + se ha tomado nota',
+  texto:'Buenos días, quiero crear un nuevo seguro de viajes. Voy a {PAIS}, {FECHA}.'},
+ {id:'p12_3',practica:'sec1',cuenta:'Fashion Events',cuentaId:'70493',cuentaCategoria:'Organización de eventos',categoria:'devolucion',tipoLabel:'Solicitud de devolución de llamada + se ha tomado nota',
+  texto:'Hola, necesito un presupuesto para organizar una cena de empresa dentro de dos meses en {CIUDAD}. ¿Qué fecha tenéis disponible?\nEmpresa: {EMPRESA}.\nMi e-mail es {EMAIL} (por si lo piden).'},
+ {id:'p12_4',practica:'sec1',cuenta:'Grupo Cortinavarra',cuentaId:'129284',cuentaCategoria:'Cortinas',categoria:'devolucion',tipoLabel:'Solicitud de devolución de llamada + se ha tomado nota',
+  texto:'Buenas, quería preguntar qué colores de cortinas tenéis disponibles. Vamos a comprar varias unidades para el {HOTEL}.\nMi e-mail es {EMAIL} (por si lo piden).'},
+ {id:'p12_5',practica:'sec1',cuenta:'Abogados Barrero y Domínguez',cuentaId:'122806',cuentaCategoria:'Servicios legales',categoria:'devolucion',tipoLabel:'Solicitud de devolución de llamada + se ha tomado nota',
+  texto:'¿Con mi abogado, por favor? (Si preguntan el nombre: "Alberto Barrero".) Quiero que me actualicen el estado de mi caso, es una indemnización por accidente. Mi número de caso es el 114524.'},
+ {id:'p12_6',practica:'sec1',cuenta:'Seguros Méndez y Pámies',cuentaId:'129047',cuentaCategoria:'Seguros',categoria:'devolucion',tipoLabel:'Solicitud de devolución de llamada + se ha tomado nota',
+  texto:'Hola, quería preguntar si puedo contratar un seguro de hogar.'},
+ {id:'p12_7',practica:'sec1',cuenta:'Universal Redes',cuentaId:'129038',cuentaCategoria:'Consultoría de redes y soporte informático',categoria:'devolucion',tipoLabel:'Solicitud de devolución de llamada + se ha tomado nota',
+  texto:'Buenos días, necesito un presupuesto para instalar un nuevo puesto de trabajo en la oficina.\nEmpresa: {EMPRESA}.'},
+ {id:'p12_8',practica:'sec1',cuenta:'Abogados Barrero y Domínguez',cuentaId:'122806',cuentaCategoria:'Servicios legales',categoria:'devolucion',tipoLabel:'Solicitud de devolución de llamada + se ha tomado nota',disponibilidadFija:'Lo antes posible',
+  texto:'Necesito hablar con mi abogado. (Si preguntan el nombre: "Alberto Barrero".) Me ha llegado una carta del juzgado indicando que debo presentarme el próximo viernes. Mi número de caso es el 1152025.'},
+
+ {id:'p4_1',practica:'sec3',cuenta:'Grupo Cortinavarra',cuentaId:'129284',cuentaCategoria:'Cortinas',categoria:'informacion',tipoLabel:'Se ha dado información',
+  texto:'Hola, quería preguntar por el estado de mi pedido.\nMi e-mail es {EMAIL}. Dirección de envío: {DIRECCION}, {CIUDAD}.'},
+ {id:'p4_2',practica:'sec3',cuenta:'Natural Shop',cuentaId:'70562',cuentaCategoria:'Venta de jabones',categoria:'informacion',tipoLabel:'Se ha dado información · facilita e-mail',
+  texto:'Me gustaría informarme para hacer el taller de jabones naturales.\n(Si piden un e-mail de contacto: es {EMAIL}.)'},
+ {id:'p4_3',practica:'sec3',cuenta:'Natural Shop',cuentaId:'70562',cuentaCategoria:'Venta de jabones',categoria:'informacion',tipoLabel:'Se ha tomado nota del pedido + se ha dado información (anotación de pedido)',
+  texto:'Me gustaría hacer un pedido. Pago con tarjeta. Mi e-mail es {EMAIL}. Mi número de cliente es el 7741. Quiero 20 cajas de jabones HK112, 40 cajas de jabones HB233 y 20 cajas de jabones KB200. ¿Cuándo lo recibiré? Lo envío a {CIUDAD}.'},
+ {id:'p4_4',practica:'sec3',cuenta:'Natural Shop',cuentaId:'70562',cuentaCategoria:'Venta de jabones',categoria:'informacion',tipoLabel:'Se ha tomado nota de un pedido',
+  texto:'Me gustaría hacer un pedido. Soy particular, pago por transferencia. Quiero 6 unidades CE78 y 12 unidades KP34.'},
+ {id:'p4_5',practica:'sec3',cuenta:'Sam Sailor',cuentaId:'70515',cuentaCategoria:'Venta de maletas',categoria:'informacion',tipoLabel:'Se ha tomado nota de un pedido',
+  texto:'Soy cliente número 221 y quiero hacer un pedido: 4 maletas de mano azules AZ4H y 2 maletas grandes grises GR8X.\nEmpresa: {EMPRESA}.'},
+ {id:'p4_6',practica:'sec3',cuenta:'Natural Shop',cuentaId:'70562',cuentaCategoria:'Venta de jabones',categoria:'informacion',tipoLabel:'Se ha dado información · leer la frase del motivo',
+  texto:'Buenas, quería preguntar qué tipo de productos vendéis.\n(Al final, di que lo vas a hablar con tu socio y que volverás a llamar — se cierra como "Se ha dado información".)'},
+ {id:'p4_7',practica:'sec3',cuenta:'Sam Sailor',cuentaId:'70515',cuentaCategoria:'Venta de maletas',categoria:'informacion',tipoLabel:'Modifica la info actual (fecha de hoy) · se ha dado información',
+  texto:'(Di que eres la persona que aparece en el campo "información actual" de la cuenta.) Quiero saber si ya tenéis listo mi presupuesto.\nEmpresa: {EMPRESA}.'},
+ {id:'p4_8',practica:'sec3',cuenta:'Fashion Events',cuentaId:'70493',cuentaCategoria:'Organización de eventos',categoria:'informacion',tipoLabel:'Se ha dado información',
+  texto:'Hola, quería información sobre la organización de eventos.\n(Al final, di que llamarás otro día — se cierra como "Se ha dado información".)'},
+
+ {id:'p3_1',practica:'sec2',cuenta:'Fashion Events',cuentaId:'70493',cuentaCategoria:'Organización de eventos',categoria:'transferencia',tipoLabel:'Transferencia de llamada con éxito',
+  texto:'Hola, ¿está Blanca Rodríguez? Tengo que finalizar los preparativos de un evento que tenemos en dos semanas.\nMi e-mail es {EMAIL} (si lo piden).'},
+ {id:'p3_2',practica:'sec2',cuenta:'Natural Shop',cuentaId:'70562',cuentaCategoria:'Venta de jabones',categoria:'transferencia',tipoLabel:'Transferencia fallida: no contesta',
+  texto:'Hola, ¿está Mariano? Quiero hacer unos cambios en un presupuesto. Mi e-mail es {EMAIL} (si lo piden).\n(Simula que Mariano no contesta.)'},
+ {id:'p3_3',practica:'sec2',cuenta:'Fashion Events',cuentaId:'70493',cuentaCategoria:'VIP · Organización de eventos',categoria:'transferencia',tipoLabel:'VIP · Transferencia con éxito (no debe preguntar nada)',tagColor:'#F2C230',fixed:true,
+  fixedM:{nombre:'Albert Benavente Macaya', empresa:'La Federica', tel:'635 142 896'},
+  fixedF:{nombre:'Claudia Dorena Khaal', empresa:'Tartas Dorenisa', tel:'632 156 325'},
+  texto:'Con Blanca Rodríguez, por favor. Soy {NOMBRE}, de {EMPRESA}. Mi teléfono es el {TEL}.\n(Este contacto es VIP: el agente no debe pedir ningún dato, solo transferir.)'},
+ {id:'p3_4',practica:'sec2',cuenta:'InfoSegur',cuentaId:'129281',cuentaCategoria:'Seguridad informática',categoria:'transferencia',tipoLabel:'Transferencia con éxito · debe tomar e-mail',
+  texto:'¿Con Eduardo Flores, por favor? Tengo pendiente una reparación en mi ordenador.\n(Si piden un e-mail de contacto: es {EMAIL}.)'},
+ {id:'p3_5',practica:'sec2',cuenta:'Grupo Cortinavarra',cuentaId:'129284',cuentaCategoria:'Cortinas',categoria:'transferencia',tipoLabel:'Transferencia con éxito (horario 8h–13h y 16h–18h)',
+  texto:'Hola, ¿está Clara Berrocal? {MOTIVO}'},
+
+ {id:'p5_1',practica:'sec4',cuenta:'Grupo Cortinavarra',cuentaId:'129284',cuentaCategoria:'Cortinas',categoria:'dificil',tipoLabel:'Caller un poco molesto · se ha tomado nota',disponibilidadFija:'Lo antes posible',
+  texto:'"¿Hablé contigo ayer, verdad? Llevo llamando desde el jueves para saber cuándo me llegará el pedido y siempre me dicen lo mismo. Necesito que me contesten hoy mismo."\n(No facilites tu apellido a la primera; solo si el agente insiste explícitamente. Sobre el e-mail: di que ya lo has dado 4 veces — si insiste, dalo.)'},
+ {id:'p5_2',practica:'sec4',cuenta:'Seguros Méndez y Pámies',cuentaId:'129047',cuentaCategoria:'Seguros',categoria:'dificil',tipoLabel:'Recopilación difícil de datos · nuevo cliente · se ha tomado nota',
+  texto:'"¿Esta es la oficina de seguros que está junto a la antigua oficina de correos, verdad?" (Si dudan, da la calle: Peris i Valero.)\n"Hablé, creo que era Clara, hace unos meses para un seguro de viaje." (En realidad te llamas Claudia — corrígelo si insisten en el nombre.)\n(No des tu apellido a menos que te lo pidan una segunda vez. Solo cuando confirmen la calle o tu nombre correcto, da el resto de la información.)'},
+ {id:'p5_3',practica:'sec4',cuenta:'Natural Shop',cuentaId:'70562',cuentaCategoria:'Venta de jabones',categoria:'dificil',tipoLabel:'Caller muy molesto · recopilación difícil · devolución de llamada · se ha tomado nota',disponibilidadFija:'Lo antes posible',
+  texto:'Empresa: Campos Fit. Mi e-mail es {EMAIL} (si lo piden, es para el tema de administración).\n"¿Eres Lola Redondo? Ponme con ella, por favor." "Ya os lo he explicado 20 veces. Me tenéis que hacer una devolución de 759,28 € por un pedido que me cancelasteis hace 3 meses y siempre me dais largas."\n(Simula que Lola no contesta.) "Pues dile que si no me paga esta tarde, voy a denunciarles." (Cuelga rápido sin dejar hablar al agente.)'},
+ {id:'p5_4',practica:'sec4',cuenta:'Seguros Méndez y Pámies',cuentaId:'129047',cuentaCategoria:'Seguros',categoria:'dificil',tipoLabel:'Insultos directos a la secretaria',
+  texto:'(Improvisa un insulto directo hacia el agente.) El agente debe pedirte que cambies el tono o se verá obligado a colgar.\n(Si sigues insultando, debe decir "Que tenga un buen día" y colgar.)'},
+ {id:'p5_5',practica:'sec4',cuenta:'Grupo Cortinavarra',cuentaId:'129284',cuentaCategoria:'Cortinas',categoria:'comercial',tipoLabel:'Llamada comercial compleja (con motivo real)',
+  texto:'"Buenos días, con el Sr. Berrocal, por favor. Le llamo de DEKRA, es por los cursos de seguridad obligatorios que deben hacer antes de final del trimestre."\n(En realidad quieres ofrecer unos cursos adicionales — el agente debe seguir las instrucciones de comerciales con motivo.)'},
+ {id:'p5_6',practica:'sec4',cuenta:'Abogados Barrero y Domínguez',cuentaId:'122806',cuentaCategoria:'Servicios legales',categoria:'emergencia',tipoLabel:'Emergencia · transferencia con éxito',disponibilidadFija:'Ahora mismo, es urgente',
+  texto:'¿Está Alberto Barrero? Tengo una cita con él en cinco minutos y la puerta está cerrada.'},
+ {id:'p5_7',practica:'sec4',cuenta:'Natural Shop',cuentaId:'70562',cuentaCategoria:'Venta de jabones',categoria:'comercial',tipoLabel:'Llamada comercial fácil de identificar',
+  texto:'"Muy buenos días. Le llamo de Vodafone. ¿Estoy hablando con el titular de la línea?"'},
+
+ {id:'p6_1',practica:'sec4',cuenta:'Abogados Barrero y Domínguez',cuentaId:'122806',cuentaCategoria:'Servicios legales',categoria:'cliente',tipoLabel:'Llamada de prueba del cliente',
+  texto:'"Estoy probando la línea." Nombre: Alberto Barrero.\nContraseña telefónica: "secretaria" (todo en minúscula).'},
+ {id:'p6_2',practica:'sec4',cuenta:'Abogados Barrero y Domínguez',cuentaId:'122806',cuentaCategoria:'Servicios legales',categoria:'cliente',tipoLabel:'Llamada de prueba del cliente',
+  texto:'Quiero modificar la información actual de mi cuenta.\nContraseña telefónica: "secretaria" (todo en minúscula).'},
+ {id:'p6_3',practica:'sec4',cuenta:'Abogados Barrero y Domínguez',cuentaId:'122806',cuentaCategoria:'Servicios legales',categoria:'otros',tipoLabel:'Broma telefónica',
+  texto:'(Improvisa una broma telefónica.)'},
+ {id:'p6_4',practica:'sec4',cuenta:'Abogados Barrero y Domínguez',cuentaId:'122806',cuentaCategoria:'Servicios legales',categoria:'otros',tipoLabel:'No contesta',
+  texto:'(Simula que aparece un número desconocido en el dial y que no contestas.)\n(Recordatorio para el agente: decir el saludo tres veces antes de colgar.)'},
+
+ {id:'p7_1',practica:'sec5',cuenta:'Sam Sailor',cuentaId:'70515',cuentaCategoria:'Venta de maletas',categoria:'informacion',tipoLabel:'Solicita e-mail (gris) · se ha dado información',
+  texto:'¿Me puede dar el e-mail de Pilar Rosa? Quiero enviarle las fotos de unas maletas que le pedí.\nEmpresa: {EMPRESA}.'},
+ {id:'p7_2',practica:'sec5',cuenta:'InfoSegur',cuentaId:'129281',cuentaCategoria:'Seguridad informática',categoria:'otros',tipoLabel:'Transferir a un agente nativo (cuidado: no dar a llamar)',
+  texto:'(Simula que la llamada es en alemán.) El agente debe decir: "Wait a second, I will transfer to a German colleague."'},
+ {id:'p7_3',practica:'sec5',cuenta:'Sam Sailor',cuentaId:'70515',cuentaCategoria:'Venta de maletas',categoria:'devolucion',tipoLabel:'Solicita móvil (naranja) · devolución de llamada + se ha tomado nota',
+  texto:'¿Me puede dar el móvil de Sara Miranda? (Si no lo dan: pide que te llamen urgentemente porque tienes una factura pendiente de pago de 181,28 €.)\nEmpresa: {EMPRESA}.'},
+ {id:'p7_4',practica:'sec5',cuenta:'Natural Shop',cuentaId:'70562',cuentaCategoria:'Subcuenta · Venta de jabones',categoria:'otros',tipoLabel:'Subcuenta · devolución de llamada + se ha tomado nota',
+  texto:'Hola, soy proveedor de cubertería para eventos, de la empresa {EMPRESA}. Estamos pendientes de cerrar un presupuesto con vosotros.'},
+ {id:'p7_5',practica:'sec5',cuenta:'Abogados Barrero y Domínguez',cuentaId:'122806',cuentaCategoria:'Servicios legales',categoria:'dificil',tipoLabel:'No es una emergencia (aunque lo parezca)',disponibilidadFija:'Lo antes posible',
+  texto:'Necesito que me pasen con Alberto Barrero. Me ha llegado una carta de embargo de Hacienda: si no contesto en 7 días me embargarán las cuentas y no podré trabajar. Es muy urgente.'},
+ {id:'p7_6',practica:'sec5',cuenta:'Fashion Events',cuentaId:'70493',cuentaCategoria:'Organización de eventos',categoria:'cita',tipoLabel:'Cita en calendario (repetir hasta acabar el tiempo)',
+  texto:'Necesito una cita para preparar la conferencia de medio ambiente de la semana que viene.'},
+ {id:'p7_7',practica:'sec5',cuenta:'Abogados Barrero y Domínguez',cuentaId:'122806',cuentaCategoria:'Servicios legales',categoria:'cita',tipoLabel:'Cita en calendario (repetir hasta acabar el tiempo)',
+  texto:'Necesito una cita para ver al Sr. Alberto Barrero. Es para preparar el juicio que tenemos en dos semanas.\n¿Es usted cliente? Sí.\nMi e-mail es {EMAIL} (por si lo piden).'}
+];
+
+/* ================= STATE ================= */
+let gender = 'm';
+let activeFilter = 'todas';
+const cardState = {};       // id -> {nombre, tel, empresa, hotel, ciudad, pais, fecha, email, motivo}
+const collapsedState = {};  // practicaKey -> bool
+Object.keys(PRACTICAS).forEach(k => collapsedState[k] = false);
+
+function fillFor(rp){
+  if(rp.fixed){
+    const fx = gender === 'f' ? rp.fixedF : rp.fixedM;
+    cardState[rp.id] = {
+      nombre: fx.nombre,
+      tel: fx.tel,
+      empresa: fx.empresa || rnd(EMPRESAS), hotel: rnd(HOTELES), ciudad: rnd(CIUDADES),
+      pais: rnd(PAISES), fecha: rnd(FECHAS), motivo: rnd(MOTIVOS_CONTABLES),
+      disponibilidad: rp.disponibilidadFija || rnd(DISPONIBILIDADES),
+      direccion: rnd(DIRECCIONES)
+    };
+    cardState[rp.id].email = slug(cardState[rp.id].nombre) + '@yahoo.es';
+    return;
+  }
+  const nombreArr = gender === 'f' ? NOMBRES_F : NOMBRES_M;
+  const s = {
+    nombre: rnd(nombreArr) + ' ' + dosApellidos(),
+    tel: rndPhone(),
+    empresa: rnd(EMPRESAS),
+    hotel: rnd(HOTELES),
+    ciudad: rnd(CIUDADES),
+    pais: rnd(PAISES),
+    fecha: rnd(FECHAS),
+    motivo: rnd(MOTIVOS_CONTABLES),
+    disponibilidad: rp.disponibilidadFija || rnd(DISPONIBILIDADES),
+    direccion: rnd(DIRECCIONES)
+  };
+  s.email = slug(s.nombre) + '@yahoo.es';
+  cardState[rp.id] = s;
+}
+ROLEPLAYS.forEach(fillFor);
+
+function renderText(rp){
+  const s = cardState[rp.id];
+  return rp.texto
+    .replace(/{NOMBRE}/g, s.nombre)
+    .replace(/{TEL}/g, s.tel)
+    .replace(/{EMPRESA}/g, s.empresa)
+    .replace(/{HOTEL}/g, s.hotel)
+    .replace(/{DIRECCION}/g, s.direccion)
+    .replace(/{CIUDAD}/g, s.ciudad)
+    .replace(/{PAIS}/g, s.pais)
+    .replace(/{FECHA}/g, s.fecha)
+    .replace(/{EMAIL}/g, s.email)
+    .replace(/{MOTIVO}/g, s.motivo);
+}
+
+/* ================= RENDER ================= */
+const filterStrip = document.getElementById('filterStrip');
+const mainEl = document.getElementById('main');
+
+function countFor(catKey){
+  return ROLEPLAYS.filter(r => r.categoria === catKey).length;
+}
+
+function renderFilters(){
+  let html = `<div class="chip ${activeFilter==='todas'?'active':''}" data-cat="todas">
+    <span class="led" style="background:var(--cream)"></span>Todas <span class="cnt">${ROLEPLAYS.length}</span></div>`;
+  for(const key in CATS){
+    const c = CATS[key];
+    html += `<div class="chip ${activeFilter===key?'active':''}" data-cat="${key}">
+      <span class="led" style="background:${c.color}"></span>${c.label} <span class="cnt">${countFor(key)}</span></div>`;
+  }
+  filterStrip.innerHTML = html;
+  filterStrip.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      activeFilter = chip.getAttribute('data-cat');
+      applyFilterCollapse();
+      renderFilters();
+      renderMain();
+    });
+  });
+}
+
+/* Al cambiar el filtro: las secciones sin resultados se pliegan solas,
+   y las que sí tienen resultados se despliegan. Con "Todas" se despliega todo. */
+function applyFilterCollapse(){
+  for(const pKey in PRACTICAS){
+    if(activeFilter === 'todas'){
+      collapsedState[pKey] = false;
+    } else {
+      const hasMatch = ROLEPLAYS.some(r => r.practica === pKey && r.categoria === activeFilter);
+      collapsedState[pKey] = !hasMatch;
+    }
+  }
+}
+
+function cardHTML(rp){
+  const cat = CATS[rp.categoria];
+  const tagColor = rp.tagColor || cat.color;
+  const s = cardState[rp.id];
+  return `
+  <div class="card" data-id="${rp.id}">
+    <div class="card-perf"></div>
+    <div class="card-head">
+      <div class="cuenta-block">
+        <div class="cuenta-name">${rp.cuenta} <span class="cuenta-num">· ${rp.cuentaId}</span><button class="copy-btn" data-copy="${rp.cuentaId}" title="Copiar número de cuenta">📋</button></div>
+        <div class="cuenta-cat">${rp.cuentaCategoria}</div>
+      </div>
+      <button class="shuffle-btn ${rp.fixed?'locked':''}" title="${rp.fixed?'Datos fijos: este contacto siempre es el mismo':'Generar nueva variante'}" data-id="${rp.id}">🎲</button>
+    </div>
+    <div class="tag-row">
+      <span class="tag" style="background:${tagColor}22;color:${tagColor};border:1px solid ${tagColor}55;">
+        <span class="led" style="background:${tagColor}"></span>${rp.tipoLabel}
+      </span>
+      ${rp.fixed ? `<span class="tag fixed">🔒 Identidad fija</span>` : ''}
+    </div>
+    <div class="card-body">${renderText(rp)}</div>
+    <div class="card-foot">
+      <div class="field">
+        <span class="field-label">🎭 Tu personaje</span>
+        <span class="field-value name">${s.nombre}</span>
+      </div>
+      <div class="field">
+        <span class="field-label">📞 Teléfono a facilitar</span>
+        <span class="field-value tel">${s.tel}</span>
+      </div>
+      ${!rp.fixed ? `<div class="field">
+        <span class="field-label">🕐 Disponibilidad para la devolución</span>
+        <span class="field-value disp">${s.disponibilidad}</span>
+      </div>` : ''}
+    </div>
+  </div>`;
+}
+
+function renderMain(){
+  let html = '';
+  for(const pKey in PRACTICAS){
+    const meta = PRACTICAS[pKey];
+    let items = ROLEPLAYS.filter(r => r.practica === pKey);
+    if(activeFilter !== 'todas') items = items.filter(r => r.categoria === activeFilter);
+
+    const isEmptyForFilter = activeFilter !== 'todas' && items.length === 0;
+    const collapsed = collapsedState[pKey];
+
+    html += `<section class="practica ${collapsed ? 'collapsed' : ''} ${isEmptyForFilter ? 'hidden-empty' : ''}" data-key="${pKey}">
+      <div class="practica-tab" data-key="${pKey}">
+        <button class="fold-btn" data-key="${pKey}" title="Plegar / desplegar">▾</button>
+        <span class="practica-num">${meta.num}</span>
+        <span class="practica-name">${meta.name}</span>
+        <span class="practica-count">(${items.length} roleplay${items.length===1?'':'s'})</span>
+      </div>
+      <div class="practica-content">
+        <details class="brief">
+          <summary>Explicación del formador antes del roleplay</summary>
+          <div class="brief-body">${meta.brief}</div>
+        </details>
+        ${items.length ? `<div class="grid">${items.map(cardHTML).join('')}</div>` : `<div class="empty-state">Sin roleplays para este filtro en este bloque.</div>`}
+      </div>
+    </section>`;
+  }
+  mainEl.innerHTML = html;
+
+  mainEl.querySelectorAll('.shuffle-btn').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const id = btn.getAttribute('data-id');
+      const rp = ROLEPLAYS.find(r=>r.id===id);
+      if(rp.fixed) return;
+      fillFor(rp);
+      renderMain();
+    });
+  });
+
+  mainEl.querySelectorAll('.copy-btn').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const text = btn.getAttribute('data-copy');
+      navigator.clipboard.writeText(text).then(()=>{
+        const original = btn.textContent;
+        btn.textContent = '✓';
+        btn.classList.add('copied');
+        setTimeout(()=>{ btn.textContent = original; btn.classList.remove('copied'); }, 1100);
+      });
+    });
+  });
+
+  mainEl.querySelectorAll('.practica-tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      const key = tab.getAttribute('data-key');
+      collapsedState[key] = !collapsedState[key];
+      renderMain();
+    });
+  });
+}
+
+/* ================= CONTROLS ================= */
+document.getElementById('genderSwitch').addEventListener('click', (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  gender = btn.getAttribute('data-g');
+  document.querySelectorAll('#genderSwitch button').forEach(b=>b.classList.toggle('active', b===btn));
+  ROLEPLAYS.forEach(fillFor);
+  renderMain();
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  ROLEPLAYS.forEach(fillFor);
+  renderMain();
+});
+
+renderFilters();
+renderMain();
+</script>
+</body>
+</html>
